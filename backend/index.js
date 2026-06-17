@@ -14,6 +14,12 @@ const PORT       = process.env.PORT || 4000;
 // ── MIDDLEWARE ──────────────────────────────────────────────────────────────
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// ── ROOT ROUTE ───────────────────────────────────────────────────────────────
+app.get("/", (req, res) => {
+  res.send("Sentinel-Black API is running");
+});
 
 // ── IN-MEMORY DATABASE ──────────────────────────────────────────────────────
 const db = {
