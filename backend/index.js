@@ -121,17 +121,41 @@ function requireAuth(req, res, next) {
 
 // ── AUTH ROUTES ──────────────────────────────────────────────────────────────
 app.post("/auth/login", (req, res) => {
-  const { email, password } = req.body;
-  const user = db.users.find(u => u.email === email);
-  if (!user || !bcrypt.compareSync(password, user.password_hash))
-    return res.status(401).json({ error: "Invalid credentials" });
+  try {
+    const { email, password } = req.body;
+    
+    // Validate inputs
+    if (!email || !password) {
+      return res.status(400).json({ error: "Email and password are required" });
+    }
+    
+    const user = db.users.find(u => u.email === email);
+    
+    if (!user) {
+      return res.status(401).json({ error: "Invalid credentials" });
+    }
+    
+    if (!user.password_hash) {
+      return res.status(500).json({ error: "User account configuration error" });
+    }
+    
+    // Compare password with hash
+    const isPasswordValid = bcrypt.compareSync(password, user.password_hash);
+    
+    if (!isPasswordValid) {
+      return res.status(401).json({ error: "Invalid credentials" });
+    }
 
-  const token = jwt.sign(
-    { id: user.id, name: user.name, email: user.email, role: user.role },
-    JWT_SECRET, { expiresIn: "8h" }
-  );
-  const { password_hash, ...safe } = user;
-  res.json({ token, user: safe });
+    const token = jwt.sign(
+      { id: user.id, name: user.name, email: user.email, role: user.role },
+      JWT_SECRET, { expiresIn: "8h" }
+    );
+    const { password_hash, ...safe } = user;
+    res.json({ token, user: safe });
+  } catch (err) {
+    console.error("Login error:", err);
+    res.status(500).json({ error: "Authentication error: " + err.message });
+  }
 });
 
 app.post("/auth/logout", requireAuth, (req, res) => {

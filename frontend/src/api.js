@@ -8,17 +8,35 @@ function getToken() {
 
 async function req(method, path, body) {
   const token = getToken();
-  const res = await fetch(`${BASE}${path}`, {
-    method,
-    headers: {
-      "Content-Type": "application/json",
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-    },
-    ...(body ? { body: JSON.stringify(body) } : {}),
-  });
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.error || "Request failed");
-  return data;
+  const url = `${BASE}${path}`;
+  
+  try {
+    const res = await fetch(url, {
+      method,
+      headers: {
+        "Content-Type": "application/json",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+      ...(body ? { body: JSON.stringify(body) } : {}),
+    });
+    
+    let data;
+    try {
+      data = await res.json();
+    } catch (e) {
+      throw new Error(`Failed to parse response: ${res.statusText}`);
+    }
+    
+    if (!res.ok) {
+      throw new Error(data.error || `Request failed (${res.status}): ${res.statusText}`);
+    }
+    return data;
+  } catch (error) {
+    if (error instanceof TypeError) {
+      throw new Error(`Network error: ${error.message}`);
+    }
+    throw error;
+  }
 }
 
 export const api = {

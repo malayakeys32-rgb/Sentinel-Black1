@@ -3,7 +3,7 @@ services:
   - type: web
     name: sentinel-black-backend
     runtime: node
-    rootDir: backend
+    rootDir: ./backend
     buildCommand: npm install
     startCommand: npm start
     envVars:
@@ -18,7 +18,7 @@ services:
   - type: web
     name: sentinel-black-frontend
     runtime: static
-    rootDir: frontend
+    rootDir: ./frontend
     buildCommand: npm install && npm run build
     staticPublishPath: dist
     envVars:

@@ -93,10 +93,27 @@ function LoginScreen({ onLogin }) {
   const handleLogin = async () => {
     setError(""); setLoading(true);
     try {
-      const { token, user } = await api.login(email.trim(), password);
+      if (!email.trim()) {
+        throw new Error("Email is required");
+      }
+      if (!password) {
+        throw new Error("Password is required");
+      }
+      
+      const trimmedEmail = email.trim();
+      const { token, user } = await api.login(trimmedEmail, password);
+      
+      if (!token) {
+        throw new Error("No authentication token received");
+      }
+      if (!user) {
+        throw new Error("No user data received");
+      }
+      
       localStorage.setItem("sb_token", token);
       onLogin(user);
     } catch (e) {
+      console.error("Login error:", e);
       setError(e.message || "Access denied.");
     } finally {
       setLoading(false);
