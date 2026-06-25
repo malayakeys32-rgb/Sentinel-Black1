@@ -83,33 +83,16 @@ function LoginScreen({ onLogin }) {
   const [error, setError]       = useState("");
   const [loading, setLoading]   = useState(false);
   const [showPw, setShowPw]     = useState(false);
-
-  const DEMO = [
-    { email:"mercer@sentinel.black", password:"director001", role:"DIRECTOR" },
-    { email:"chen@sentinel.black",   password:"analyst002",  role:"ANALYST"  },
-    { email:"vance@sentinel.black",  password:"operator003", role:"OPERATOR" },
-  ];
+  const [focused, setFocused]   = useState(null);
 
   const handleLogin = async () => {
     setError(""); setLoading(true);
     try {
-      if (!email.trim()) {
-        throw new Error("Email is required");
-      }
-      if (!password) {
-        throw new Error("Password is required");
-      }
-      
-      const trimmedEmail = email.trim();
-      const { token, user } = await api.login(trimmedEmail, password);
-      
-      if (!token) {
-        throw new Error("No authentication token received");
-      }
-      if (!user) {
-        throw new Error("No user data received");
-      }
-      
+      if (!email.trim()) throw new Error("Identifier required");
+      if (!password)     throw new Error("Passphrase required");
+      const { token, user } = await api.login(email.trim(), password);
+      if (!token) throw new Error("No authentication token received");
+      if (!user)  throw new Error("No user data received");
       localStorage.setItem("sb_token", token);
       onLogin(user);
     } catch (e) {
@@ -120,85 +103,197 @@ function LoginScreen({ onLogin }) {
     }
   };
 
+  const fieldSt = (name) => ({
+    width:"100%", background:"#07090C", border:`1px solid ${focused===name ? C.red : "#1E2430"}`,
+    borderRadius:2, color:C.text, padding:"10px 12px", fontSize:12,
+    fontFamily:"'JetBrains Mono',monospace", marginBottom:0,
+    outline:"none", transition:"border-color 0.2s, box-shadow 0.2s",
+    boxShadow: focused===name ? `0 0 0 3px rgba(192,57,43,0.12)` : "none",
+    letterSpacing:"0.02em",
+  });
+
   return (
     <div style={{ minHeight:"100vh", background:C.bg, display:"flex",
-      flexDirection:"column", alignItems:"center", justifyContent:"center", padding:24 }}>
-      {/* grid overlay */}
-      <div style={{ position:"fixed", inset:0, pointerEvents:"none",
-        backgroundImage:`linear-gradient(${C.red}08 1px,transparent 1px),linear-gradient(90deg,${C.red}08 1px,transparent 1px)`,
-        backgroundSize:"40px 40px" }} />
+      flexDirection:"column", alignItems:"center", justifyContent:"center", padding:24,
+      position:"relative", overflow:"hidden" }}>
 
-      <div style={{ position:"relative", zIndex:1, width:"100%", maxWidth:400, animation:"fadeIn 0.4s ease" }}>
-        {/* Logo */}
-        <div style={{ textAlign:"center", marginBottom:36 }}>
-          <div style={{ display:"inline-flex", alignItems:"center", justifyContent:"center",
-            width:52, height:52, background:C.surface, border:`1px solid ${C.border}`,
-            borderRadius:4, marginBottom:14 }}>
-            <div style={{ width:26, height:26, background:C.red,
-              clipPath:"polygon(50% 0%,100% 38%,82% 100%,18% 100%,0% 38%)" }} />
+      <style>{`
+        @keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+        @keyframes scanline {
+          0%   { transform:translateY(-100%); }
+          100% { transform:translateY(100vh); }
+        }
+        @keyframes pulse2 { 0%,100%{ opacity:1; } 50%{ opacity:0.4; } }
+        @keyframes spin { to { transform:rotate(360deg); } }
+        @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+        .sb-field:focus { outline:none; }
+      `}</style>
+
+      {/* Fine grid */}
+      <div style={{ position:"fixed", inset:0, pointerEvents:"none",
+        backgroundImage:`linear-gradient(${C.red}06 1px,transparent 1px),linear-gradient(90deg,${C.red}06 1px,transparent 1px)`,
+        backgroundSize:"32px 32px" }} />
+
+      {/* Scanline sweep */}
+      <div style={{ position:"fixed", left:0, right:0, height:"120px", pointerEvents:"none",
+        background:`linear-gradient(to bottom, transparent, ${C.red}06, transparent)`,
+        animation:"scanline 6s linear infinite", zIndex:0 }} />
+
+      {/* Corner accents */}
+      {[["0,0","top:0,left:0","borderTop,borderLeft"],["0,0","top:0,right:0","borderTop,borderRight"],
+        ["0,0","bottom:0,left:0","borderBottom,borderLeft"],["0,0","bottom:0,right:0","borderBottom,borderRight"]
+      ].map(([,pos,borders],i) => {
+        const st = { position:"fixed", width:28, height:28, pointerEvents:"none", zIndex:1 };
+        pos.split(",").forEach(p => { const [k,v]=p.split(":"); st[k]=v; });
+        borders.split(",").forEach(b => { st[b]=`1px solid ${C.red}30`; });
+        return <div key={i} style={st} />;
+      })}
+
+      {/* Card */}
+      <div style={{ position:"relative", zIndex:2, width:"100%", maxWidth:420,
+        animation:"fadeUp 0.5s cubic-bezier(0.22,1,0.36,1)" }}>
+
+        {/* Header block */}
+        <div style={{ marginBottom:24, display:"flex", flexDirection:"column", alignItems:"center", gap:12 }}>
+          {/* Emblem */}
+          <div style={{ position:"relative", width:56, height:56, display:"flex",
+            alignItems:"center", justifyContent:"center" }}>
+            <div style={{ position:"absolute", inset:0, border:`1px solid ${C.red}40`,
+              borderRadius:3, background:C.surface }} />
+            <div style={{ position:"absolute", inset:4, border:`1px solid ${C.red}20`, borderRadius:2 }} />
+            <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+              <polygon points="13,1 25,9 21,25 5,25 1,9" fill={C.red} opacity="0.9"/>
+              <polygon points="13,6 20,11 17.5,21 8.5,21 6,11" fill="#07090C"/>
+              <polygon points="13,10 17,13 15.5,18 10.5,18 9,13" fill={C.red} opacity="0.7"/>
+            </svg>
+            {/* Status beacon */}
+            <div style={{ position:"absolute", top:6, right:6, width:5, height:5,
+              borderRadius:"50%", background:C.red, animation:"pulse2 2s infinite" }} />
           </div>
-          <div style={{ fontFamily:"'JetBrains Mono',monospace", fontWeight:700, fontSize:16,
-            letterSpacing:"0.2em" }}>SENTINEL<span style={{ color:C.red }}>·</span>BLACK</div>
-          <div style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:8, color:C.muted,
-            letterSpacing:"0.25em", marginTop:6 }}>CLASSIFIED OPERATIONS PLATFORM</div>
+
+          <div>
+            <div style={{ fontFamily:"'JetBrains Mono',monospace", fontWeight:700,
+              fontSize:17, letterSpacing:"0.22em", textAlign:"center", color:C.text }}>
+              SENTINEL<span style={{ color:C.red }}>·</span>BLACK
+            </div>
+            <div style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:8,
+              color:C.muted, letterSpacing:"0.28em", textAlign:"center", marginTop:5 }}>
+              CLASSIFIED OPERATIONS PLATFORM
+            </div>
+          </div>
         </div>
 
-        <div style={{ background:C.surface, border:`1px solid ${C.border}`, borderRadius:3, padding:"28px 24px" }}>
-          <div style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:9, color:C.red,
-            letterSpacing:"0.2em", marginBottom:18 }}>AUTHENTICATE</div>
+        {/* Login panel */}
+        <div style={{ background:C.surface, border:`1px solid #1E2430`,
+          borderRadius:3, overflow:"hidden",
+          boxShadow:"0 24px 64px rgba(0,0,0,0.6), 0 0 0 1px rgba(192,57,43,0.08)" }}>
 
-          <Lbl>EMAIL ADDRESS</Lbl>
-          <input style={inputSt} type="email" placeholder="you@sentinel.black"
-            value={email} onChange={e=>setEmail(e.target.value)}
-            onKeyDown={e=>e.key==="Enter"&&handleLogin()} />
+          {/* Panel header bar */}
+          <div style={{ padding:"10px 20px", background:C.mid,
+            borderBottom:`1px solid #1E2430`, display:"flex", alignItems:"center", gap:8 }}>
+            <div style={{ width:6, height:6, borderRadius:"50%", background:C.red,
+              animation:"pulse2 2s infinite" }} />
+            <span style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:9,
+              color:C.red, letterSpacing:"0.22em" }}>AUTHENTICATION REQUIRED</span>
+            <div style={{ marginLeft:"auto", fontFamily:"'JetBrains Mono',monospace",
+              fontSize:8, color:C.muted, letterSpacing:"0.12em" }}>SEC LVL 5</div>
+          </div>
 
-          <Lbl>PASSWORD</Lbl>
-          <div style={{ position:"relative", marginBottom:12 }}>
-            <input style={{...inputSt, marginBottom:0, paddingRight:48}}
-              type={showPw?"text":"password"} placeholder="••••••••"
-              value={password} onChange={e=>setPassword(e.target.value)}
-              onKeyDown={e=>e.key==="Enter"&&handleLogin()} />
-            <button onClick={()=>setShowPw(!showPw)} style={{
-              position:"absolute", right:10, top:"50%", transform:"translateY(-50%)",
-              background:"none", border:"none", color:C.dim, fontSize:9,
-              fontFamily:"'JetBrains Mono',monospace", cursor:"pointer" }}>
-              {showPw?"HIDE":"SHOW"}
+          <div style={{ padding:"28px 28px 24px" }}>
+
+            {/* Email field */}
+            <div style={{ marginBottom:16 }}>
+              <label style={{ display:"flex", justifyContent:"space-between",
+                fontFamily:"'JetBrains Mono',monospace", fontSize:8, color:C.dim,
+                letterSpacing:"0.18em", marginBottom:6 }}>
+                <span>OPERATOR ID</span>
+                <span style={{ color:C.muted }}>EMAIL</span>
+              </label>
+              <input
+                className="sb-field"
+                style={fieldSt("email")}
+                type="email"
+                placeholder="you@sentinel.black"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                onFocus={() => setFocused("email")}
+                onBlur={() => setFocused(null)}
+                onKeyDown={e => e.key==="Enter" && handleLogin()}
+                autoComplete="username"
+              />
+            </div>
+
+            {/* Password field */}
+            <div style={{ marginBottom:20 }}>
+              <label style={{ display:"flex", justifyContent:"space-between",
+                fontFamily:"'JetBrains Mono',monospace", fontSize:8, color:C.dim,
+                letterSpacing:"0.18em", marginBottom:6 }}>
+                <span>PASSPHRASE</span>
+                <button onClick={() => setShowPw(!showPw)} style={{
+                  background:"none", border:"none", color:C.muted, fontSize:8,
+                  fontFamily:"'JetBrains Mono',monospace", cursor:"pointer",
+                  letterSpacing:"0.12em", padding:0 }}>
+                  {showPw ? "● CONCEAL" : "○ REVEAL"}
+                </button>
+              </label>
+              <input
+                className="sb-field"
+                style={fieldSt("password")}
+                type={showPw ? "text" : "password"}
+                placeholder="••••••••••••"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                onFocus={() => setFocused("password")}
+                onBlur={() => setFocused(null)}
+                onKeyDown={e => e.key==="Enter" && handleLogin()}
+                autoComplete="current-password"
+              />
+            </div>
+
+            {/* Error */}
+            {error && (
+              <div style={{ background:"rgba(192,57,43,0.08)", border:`1px solid ${C.red}60`,
+                borderLeft:`3px solid ${C.red}`, borderRadius:2,
+                padding:"9px 14px", marginBottom:18,
+                fontFamily:"'JetBrains Mono',monospace", fontSize:10, color:C.red,
+                display:"flex", alignItems:"center", gap:8 }}>
+                <span style={{ fontSize:12 }}>▲</span>
+                <span>{error}</span>
+              </div>
+            )}
+
+            {/* Submit */}
+            <button
+              onClick={handleLogin}
+              disabled={loading}
+              style={{
+                width:"100%", padding:"11px 0",
+                background: loading ? C.mid : C.red,
+                border: loading ? `1px solid ${C.border}` : `1px solid ${C.red}`,
+                borderRadius:2, color: loading ? C.dim : "#fff",
+                fontFamily:"'JetBrains Mono',monospace", fontSize:11,
+                fontWeight:700, letterSpacing:"0.18em", cursor: loading ? "default" : "pointer",
+                transition:"background 0.2s, color 0.2s",
+                display:"flex", alignItems:"center", justifyContent:"center", gap:10,
+              }}>
+              {loading ? (
+                <>
+                  <div style={{ width:12, height:12, border:`2px solid ${C.muted}`,
+                    borderTop:`2px solid ${C.dim}`, borderRadius:"50%",
+                    animation:"spin 0.7s linear infinite" }} />
+                  AUTHENTICATING…
+                </>
+              ) : "INITIATE ACCESS"}
             </button>
           </div>
+        </div>
 
-          {error && (
-            <div style={{ background:"rgba(192,57,43,0.1)", border:`1px solid ${C.red}`,
-              borderRadius:2, padding:"8px 12px", marginBottom:14,
-              fontFamily:"'JetBrains Mono',monospace", fontSize:10, color:C.red }}>
-              ⚠ {error}
-            </div>
-          )}
-
-          <BtnPrimary onClick={handleLogin} disabled={loading} fullWidth>
-            {loading ? "AUTHENTICATING…" : "ACCESS SYSTEM"}
-          </BtnPrimary>
-
-          {/* Demo creds */}
-          <div style={{ marginTop:18, padding:"12px 14px", background:C.mid,
-            borderRadius:2, border:`1px solid ${C.border}` }}>
-            <div style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:9, color:C.muted,
-              letterSpacing:"0.15em", marginBottom:8 }}>DEMO CREDENTIALS</div>
-            {DEMO.map(u => (
-              <div key={u.email} onClick={()=>{setEmail(u.email);setPassword(u.password);}}
-                style={{ padding:"6px 0", cursor:"pointer", display:"flex",
-                  justifyContent:"space-between", alignItems:"center",
-                  borderBottom:`1px solid ${C.border}` }}>
-                <div style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:9 }}>
-                  <span style={{ color:C.text }}>{u.email}</span>
-                  <span style={{ color:C.dim, marginLeft:8 }}>{u.password}</span>
-                </div>
-                <Badge label={u.role} color={u.role==="DIRECTOR"?C.red:u.role==="ANALYST"?C.amber:C.teal} />
-              </div>
-            ))}
-            <div style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:8, color:C.muted, marginTop:8 }}>
-              Click a row to autofill
-            </div>
-          </div>
+        {/* Footer */}
+        <div style={{ marginTop:16, display:"flex", justifyContent:"space-between",
+          fontFamily:"'JetBrains Mono',monospace", fontSize:8, color:C.muted,
+          letterSpacing:"0.12em", padding:"0 4px" }}>
+          <span>ENCRYPTED CHANNEL</span>
+          <span style={{ color:`${C.red}80` }}>⬤ SECURE</span>
         </div>
       </div>
     </div>

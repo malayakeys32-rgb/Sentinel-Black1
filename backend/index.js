@@ -34,27 +34,11 @@ const db = {
 // ── SEED DATA ───────────────────────────────────────────────────────────────
 const now = () => new Date().toISOString();
 
-const seedPassword = bcrypt.hashSync("director001", 10);
-const director = {
-  id: uuid(), name: "Director Mercer",
-  email: "mercer@sentinel.black",
-  password_hash: seedPassword,
+db.users.push({
+  id: uuid(), name: "Director",
+  email: "malayatechgirl@gmail.com",
+  password_hash: bcrypt.hashSync("mississippiippissossim", 10),
   role: "DIRECTOR", created_at: now(),
-};
-db.users.push(director);
-
-db.users.push({
-  id: uuid(), name: "Analyst Chen",
-  email: "chen@sentinel.black",
-  password_hash: bcrypt.hashSync("analyst002", 10),
-  role: "ANALYST", created_at: now(),
-});
-
-db.users.push({
-  id: uuid(), name: "Operator Vance",
-  email: "vance@sentinel.black",
-  password_hash: bcrypt.hashSync("operator003", 10),
-  role: "OPERATOR", created_at: now(),
 });
 
 const caseA = {
