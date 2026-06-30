@@ -25,5 +25,12 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Sentinel-Black Tactical Ops running on port ${PORT}`);
 });
+app.use('/api/auth', require('./routes/auth'));
+app.use('/api/dashboard', require('./routes/dashboard'));
+app.use('/api/evidence', require('./routes/evidence'));
+app.use('/api/ops', require('./routes/ops'));
+app.use('/api/system', require('./routes/system'));
+app.use('/api/settings', require('./routes/settings'));
+app.use('/api/auth', require('./routes/auth'));
 
 
