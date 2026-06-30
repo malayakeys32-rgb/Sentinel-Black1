@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sentinel-Black Login</title>
+  <style>
+    body {
+      background: #050608;
+      color: #ff7f00;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .box {
+      background: #0b0d12;
+      padding: 30px;
+      border-radius: 10px;
+      width: 300px;
+      border: 1px solid #1c1f29;
+      box-shadow: 0 0 20px rgba(255,127,0,0.2);
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      background: #11141c;
+      border: 1px solid #1c1f29;
+      color: #ff7f00;
+      border-radius: 6px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 15px;
+      background: #ff7f00;
+      border: none;
+      color: #050608;
+      font-weight: bold;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .error {
+      color: #ff3b3b;
+      margin-top: 10px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>Sentinel-Black Access</h2>
+    <input id="user" placeholder="Username">
+    <input id="pass" type="password" placeholder="Password">
+    <button onclick="login()">ENTER</button>
+    <div id="error" class="error"></div>
+  </div>
+
+  <script>
+    async function login() {
+      const user = document.getElementById("user").value;
+      const pass = document.getElementById("pass").value;
+
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ user, pass })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        document.getElementById("error").innerText = data.error || "Access denied";
+        return;
+      }
+
+      localStorage.setItem("sb_token", data.token);
+      window.location.href = "/";
+    }
+  </script>
+</body>
+</html>
