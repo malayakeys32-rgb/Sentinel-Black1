@@ -1,19 +1,27 @@
 const express = require('express');
-const router = express.Router();
+const cors = require('cors');
+const path = require('path');
 
-router.get('/', (req, res) => {
-  res.json({
-    systemsOnline: 7,
-    activeAlerts: 2,
-    operativesDeployed: 5,
-    recentActivity: [
-      { id: 1, text: 'Agent Alpha logged in', time: '04:00' },
-      { id: 2, text: 'Recon mission completed', time: '03:45' },
-      { id: 3, text: 'Alert: Intrusion detected', time: '03:30' }
-    ],
-    currentOp: 'Night Watch',
-    threatLevel: 'HIGH'
-  });
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.use(cors());
+app.use(express.json());
+
+// API routes
+app.use('/api/dashboard', require('./routes/dashboard'));
+app.use('/api/evidence', require('./routes/evidence'));
+app.use('/api/ops', require('./routes/ops'));
+app.use('/api/system', require('./routes/system'));
+app.use('/api/settings', require('./routes/settings'));
+
+// Serve UI
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-module.exports = router;
+app.listen(PORT, () => {
+  console.log(`Sentinel-Black Tactical Ops running on port ${PORT}`);
+});
