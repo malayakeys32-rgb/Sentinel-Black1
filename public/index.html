@@ -18,11 +18,7 @@
       --border: #1c1f29;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -32,7 +28,6 @@
       display: flex;
     }
 
-    /* Layout */
     .shell {
       display: grid;
       grid-template-columns: 260px minmax(0, 1fr);
@@ -41,7 +36,6 @@
       margin: 0 auto;
     }
 
-    /* Sidebar */
     .sidebar {
       background: linear-gradient(to bottom, #080a10, #050608);
       border-right: 1px solid var(--border);
@@ -51,61 +45,36 @@
       gap: 24px;
     }
 
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+    .logo { display: flex; align-items: center; gap: 10px; }
 
     .logo-badge {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
+      width: 32px; height: 32px; border-radius: 50%;
       border: 2px solid var(--accent);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       box-shadow: 0 0 18px var(--accent-soft);
-      font-size: 16px;
-      color: var(--accent);
+      font-size: 16px; color: var(--accent);
     }
 
     .logo-text {
-      font-size: 15px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--muted);
+      font-size: 15px; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--muted);
     }
 
     .logo-title {
-      font-size: 13px;
-      color: var(--accent);
-      text-transform: uppercase;
+      font-size: 13px; color: var(--accent); text-transform: uppercase;
     }
 
     .nav-section-title {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: var(--muted);
-      margin-bottom: 6px;
+      font-size: 11px; text-transform: uppercase;
+      letter-spacing: 0.16em; color: var(--muted); margin-bottom: 6px;
     }
 
-    .nav-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
+    .nav-list { list-style: none; display: flex; flex-direction: column; gap: 4px; }
 
     .nav-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 8px 10px;
-      border-radius: 6px;
-      font-size: 13px;
-      color: var(--muted);
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 10px; border-radius: 6px;
+      font-size: 13px; color: var(--muted);
       cursor: default;
     }
 
@@ -117,88 +86,55 @@
     }
 
     .nav-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
+      width: 8px; height: 8px; border-radius: 50%;
       border: 1px solid var(--accent);
       box-shadow: 0 0 10px var(--accent-soft);
     }
 
-    .nav-dot-muted {
-      border-color: var(--border);
-      box-shadow: none;
-    }
+    .nav-dot-muted { border-color: var(--border); box-shadow: none; }
 
     .sidebar-footer {
-      margin-top: auto;
-      font-size: 11px;
-      color: var(--muted);
-      border-top: 1px solid var(--border);
-      padding-top: 10px;
+      margin-top: auto; font-size: 11px; color: var(--muted);
+      border-top: 1px solid var(--border); padding-top: 10px;
     }
 
-    /* Main */
     .main {
       background: radial-gradient(circle at top left, #141827 0, var(--bg-alt) 40%, var(--bg) 100%);
       padding: 20px 22px;
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
+      display: flex; flex-direction: column; gap: 18px;
     }
 
-    /* Top bar */
     .top-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
+      display: flex; justify-content: space-between;
+      align-items: center; gap: 12px;
     }
 
-    .top-left {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
+    .top-left { display: flex; flex-direction: column; gap: 4px; }
 
     .top-title {
-      font-size: 18px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
+      font-size: 18px; letter-spacing: 0.08em; text-transform: uppercase;
     }
 
-    .top-sub {
-      font-size: 12px;
-      color: var(--muted);
-    }
+    .top-sub { font-size: 12px; color: var(--muted); }
 
-    .top-right {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+    .top-right { display: flex; align-items: center; gap: 10px; }
 
     .pill {
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      padding: 6px 10px;
-      font-size: 11px;
-      color: var(--muted);
+      border-radius: 999px; border: 1px solid var(--border);
+      padding: 6px 10px; font-size: 11px; color: var(--muted);
     }
 
     .pill-accent {
-      border-color: var(--accent);
-      color: var(--accent);
+      border-color: var(--accent); color: var(--accent);
       box-shadow: 0 0 14px var(--accent-soft);
     }
 
-    /* Grid */
     .grid {
       display: grid;
       grid-template-columns: minmax(0, 2fr) minmax(0, 1.4fr);
       gap: 16px;
     }
 
-    /* Panels */
     .panel {
       background: var(--panel);
       border-radius: 10px;
@@ -208,144 +144,81 @@
     }
 
     .panel-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
+      display: flex; justify-content: space-between;
+      align-items: center; margin-bottom: 10px;
     }
 
     .panel-title {
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      color: var(--muted);
+      font-size: 13px; text-transform: uppercase;
+      letter-spacing: 0.14em; color: var(--muted);
     }
 
-    .panel-tag {
-      font-size: 11px;
-      color: var(--accent);
-    }
+    .panel-tag { font-size: 11px; color: var(--accent); }
 
-    /* Status row */
     .status-row {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 10px;
-      margin-bottom: 12px;
+      gap: 10px; margin-bottom: 12px;
     }
 
     .status-card {
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      padding: 8px;
-      background: #0c1018;
+      border-radius: 8px; border: 1px solid var(--border);
+      padding: 8px; background: #0c1018;
     }
 
-    .status-label {
-      font-size: 11px;
-      color: var(--muted);
-      margin-bottom: 4px;
-    }
+    .status-label { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
 
-    .status-value {
-      font-size: 16px;
-    }
+    .status-value { font-size: 16px; }
 
-    .status-value.accent {
-      color: var(--accent);
-    }
+    .status-value.accent { color: var(--accent); }
+    .status-value.danger { color: var(--danger); }
+    .status-value.success { color: var(--success); }
 
-    .status-value.danger {
-      color: var(--danger);
-    }
-
-    .status-value.success {
-      color: var(--success);
-    }
-
-    /* Mission panel */
     .mission-block {
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      padding: 10px;
-      background: #0c1018;
-      margin-bottom: 10px;
+      border-radius: 8px; border: 1px solid var(--border);
+      padding: 10px; background: #0c1018; margin-bottom: 10px;
     }
 
-    .mission-label {
-      font-size: 11px;
-      color: var(--muted);
-      margin-bottom: 4px;
-    }
+    .mission-label { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
 
     .mission-name {
-      font-size: 14px;
-      color: var(--accent);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
+      font-size: 14px; color: var(--accent);
+      letter-spacing: 0.08em; text-transform: uppercase;
     }
 
-    .mission-meta {
-      font-size: 11px;
-      color: var(--muted);
-      margin-top: 4px;
-    }
+    .mission-meta { font-size: 11px; color: var(--muted); margin-top: 4px; }
 
-    /* Activity list */
-    .activity-list {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      margin-top: 6px;
-    }
+    .activity-list { display: flex; flex-direction: column; gap: 6px; margin-top: 6px; }
 
     .activity-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 11px;
-      padding: 6px 8px;
-      border-radius: 6px;
-      background: #0b0f16;
-      border: 1px solid var(--border);
+      display: flex; justify-content: space-between;
+      align-items: center; font-size: 11px;
+      padding: 6px 8px; border-radius: 6px;
+      background: #0b0f16; border: 1px solid var(--border);
     }
 
-    .activity-text {
-      color: var(--text);
-    }
+    .activity-text { color: var(--text); }
+    .activity-time { color: var(--muted); }
 
-    .activity-time {
-      color: var(--muted);
-    }
-
-    /* Right column panels */
     .intel-map {
-      height: 140px;
-      border-radius: 8px;
+      height: 140px; border-radius: 8px;
       border: 1px solid var(--border);
       background: radial-gradient(circle at 20% 0%, rgba(255, 127, 0, 0.2), transparent 55%),
                   radial-gradient(circle at 80% 100%, rgba(255, 127, 0, 0.15), transparent 55%),
                   #050608;
-      position: relative;
-      overflow: hidden;
-      margin-bottom: 10px;
+      position: relative; overflow: hidden; margin-bottom: 10px;
     }
 
     .intel-grid {
-      position: absolute;
-      inset: 0;
+      position: absolute; inset: 0;
       background-image: linear-gradient(#151822 1px, transparent 1px),
                         linear-gradient(90deg, #151822 1px, transparent 1px);
-      background-size: 26px 26px;
-      opacity: 0.4;
+      background-size: 26px 26px; opacity: 0.4;
     }
 
     .intel-node {
-      position: absolute;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      border: 1px solid var(--accent);
+      position: absolute; width: 8px; height: 8px;
+      border-radius: 50%; border: 1px solid var(--accent);
       box-shadow: 0 0 12px var(--accent-soft);
     }
 
@@ -354,66 +227,46 @@
     .intel-node.c { top: 70%; left: 72%; }
 
     .intel-label {
-      position: absolute;
-      bottom: 8px;
-      left: 10px;
-      font-size: 11px;
-      color: var(--muted);
+      position: absolute; bottom: 8px; left: 10px;
+      font-size: 11px; color: var(--muted);
     }
 
-    .intel-label span {
-      color: var(--accent);
-    }
+    .intel-label span { color: var(--accent); }
 
-    .system-list {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
+    .system-list { display: flex; flex-direction: column; gap: 6px; }
 
     .system-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 11px;
-      padding: 6px 8px;
-      border-radius: 6px;
-      background: #0b0f16;
-      border: 1px solid var(--border);
+      display: flex; justify-content: space-between;
+      align-items: center; font-size: 11px;
+      padding: 6px 8px; border-radius: 6px;
+      background: #0b0f16; border: 1px solid var(--border);
     }
 
-    .system-name {
-      color: var(--text);
-    }
+    .system-name { color: var(--text); }
 
-    .system-state {
-      color: var(--success);
-    }
+    .system-state { color: var(--success); }
+    .system-state.danger { color: var(--danger); }
 
-    .system-state.danger {
-      color: var(--danger);
-    }
-
-    /* Responsive */
     @media (max-width: 900px) {
-      .shell {
-        grid-template-columns: 1fr;
-      }
-      .sidebar {
-        display: none;
-      }
+      .shell { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
     }
 
     @media (max-width: 700px) {
-      .grid {
-        grid-template-columns: 1fr;
-      }
+      .grid { grid-template-columns: 1fr; }
     }
+
+    /* Small status text for API */
+    .api-status {
+      font-size: 10px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+    .api-status span { color: var(--accent); }
   </style>
 </head>
 <body>
   <div class="shell">
-    <!-- SIDEBAR -->
     <aside class="sidebar">
       <div class="logo">
         <div class="logo-badge">SB</div>
@@ -455,23 +308,25 @@
       </div>
     </aside>
 
-    <!-- MAIN -->
     <main class="main">
-      <!-- TOP BAR -->
       <div class="top-bar">
         <div class="top-left">
           <div class="top-title">Mission Control</div>
-          <div class="top-sub">Real-time operational intelligence for Sentinel-Black Tactical Ops.</div>
+          <div class="top-sub" id="top-sub">
+            Real-time operational intelligence for Sentinel-Black Tactical Ops.
+          </div>
         </div>
         <div class="top-right">
-          <div class="pill">Threat Level: <span style="color: var(--danger);">HIGH</span></div>
-          <div class="pill pill-accent">Systems Online: 7</div>
+          <div class="pill">
+            Threat Level: <span id="threat-level" style="color: var(--danger);">HIGH</span>
+          </div>
+          <div class="pill pill-accent">
+            Systems Online: <span id="systems-online">7</span>
+          </div>
         </div>
       </div>
 
-      <!-- GRID -->
       <div class="grid">
-        <!-- LEFT: DASHBOARD -->
         <section class="panel">
           <div class="panel-header">
             <div class="panel-title">Ops Status</div>
@@ -481,33 +336,36 @@
           <div class="status-row">
             <div class="status-card">
               <div class="status-label">Systems Online</div>
-              <div class="status-value success">7</div>
+              <div class="status-value success" id="card-systems-online">7</div>
             </div>
             <div class="status-card">
               <div class="status-label">Active Alerts</div>
-              <div class="status-value danger">2</div>
+              <div class="status-value danger" id="card-active-alerts">2</div>
             </div>
             <div class="status-card">
               <div class="status-label">Operatives Deployed</div>
-              <div class="status-value accent">5</div>
+              <div class="status-value accent" id="card-operatives">5</div>
             </div>
             <div class="status-card">
               <div class="status-label">Current Operation</div>
-              <div class="status-value accent">Night Watch</div>
+              <div class="status-value accent" id="card-current-op">Night Watch</div>
             </div>
           </div>
 
           <div class="mission-block">
             <div class="mission-label">Primary Operation</div>
-            <div class="mission-name">Night Watch</div>
-            <div class="mission-meta">
+            <div class="mission-name" id="mission-name">Night Watch</div>
+            <div class="mission-meta" id="mission-meta">
               Perimeter surveillance, intrusion detection, and live operative tracking.
+            </div>
+            <div class="api-status" id="dashboard-status">
+              Dashboard API: <span>pending…</span>
             </div>
           </div>
 
           <div class="mission-block">
             <div class="mission-label">Recent Activity</div>
-            <div class="activity-list">
+            <div class="activity-list" id="activity-list">
               <div class="activity-item">
                 <span class="activity-text">Agent Alpha logged in</span>
                 <span class="activity-time">04:00</span>
@@ -524,7 +382,6 @@
           </div>
         </section>
 
-        <!-- RIGHT: INTEL + SYSTEM -->
         <section class="panel">
           <div class="panel-header">
             <div class="panel-title">Intel Map</div>
@@ -537,7 +394,7 @@
             <div class="intel-node b"></div>
             <div class="intel-node c"></div>
             <div class="intel-label">
-              Linked nodes: <span>Alpha · Bravo · Charlie</span>
+              Linked nodes: <span id="intel-nodes-label">Alpha · Bravo · Charlie</span>
             </div>
           </div>
 
@@ -546,7 +403,7 @@
             <div class="panel-tag">Diagnostics</div>
           </div>
 
-          <div class="system-list">
+          <div class="system-list" id="system-list">
             <div class="system-item">
               <span class="system-name">Core Command</span>
               <span class="system-state">Online</span>
@@ -564,9 +421,154 @@
               <span class="system-state">Secured</span>
             </div>
           </div>
+
+          <div class="api-status" id="system-status">
+            System API: <span>pending…</span>
+          </div>
+
+          <div class="api-status" id="ops-status">
+            Ops API: <span>pending…</span>
+          </div>
+
+          <div class="api-status" id="evidence-status">
+            Evidence API: <span>pending…</span>
+          </div>
+
+          <div class="api-status" id="settings-status">
+            Settings API: <span>pending…</span>
+          </div>
         </section>
       </div>
     </main>
   </div>
+
+  <script>
+    async function safeFetch(url) {
+      try {
+        const res = await fetch(url);
+        if (!res.ok) throw new Error(res.status + " " + res.statusText);
+        return await res.json();
+      } catch (err) {
+        console.error("Fetch error for", url, err);
+        return null;
+      }
+    }
+
+    async function loadDashboard() {
+      const statusEl = document.getElementById("dashboard-status");
+      statusEl.innerHTML = 'Dashboard API: <span>loading…</span>';
+
+      const data = await safeFetch("/api/dashboard");
+      if (!data) {
+        statusEl.innerHTML = 'Dashboard API: <span style="color: var(--danger);">offline</span>';
+        return;
+      }
+
+      document.getElementById("systems-online").textContent = data.systemsOnline ?? "–";
+      document.getElementById("card-systems-online").textContent = data.systemsOnline ?? "–";
+      document.getElementById("card-active-alerts").textContent = data.activeAlerts ?? "–";
+      document.getElementById("card-operatives").textContent = data.operativesDeployed ?? "–";
+      document.getElementById("card-current-op").textContent = data.currentOp ?? "–";
+      document.getElementById("mission-name").textContent = data.currentOp ?? "Night Watch";
+      document.getElementById("threat-level").textContent = data.threatLevel ?? "HIGH";
+
+      const activityList = document.getElementById("activity-list");
+      activityList.innerHTML = "";
+      (data.recentActivity || []).forEach(item => {
+        const div = document.createElement("div");
+        div.className = "activity-item";
+        div.innerHTML = `
+          <span class="activity-text">${item.text}</span>
+          <span class="activity-time">${item.time}</span>
+        `;
+        activityList.appendChild(div);
+      });
+
+      statusEl.innerHTML = 'Dashboard API: <span>online</span>';
+    }
+
+    async function loadSystem() {
+      const statusEl = document.getElementById("system-status");
+      statusEl.innerHTML = 'System API: <span>loading…</span>';
+
+      const data = await safeFetch("/api/system");
+      if (!data) {
+        statusEl.innerHTML = 'System API: <span style="color: var(--danger);">offline</span>';
+        return;
+      }
+
+      const list = document.getElementById("system-list");
+      list.innerHTML = "";
+
+      const entries = [
+        { name: "Core Command", state: data.cpu || "Online" },
+        { name: "Memory", state: data.memory || "Stable" },
+        { name: "Uptime", state: data.uptime || "Operational" }
+      ];
+
+      entries.forEach(e => {
+        const div = document.createElement("div");
+        div.className = "system-item";
+        const danger = /alert|critical|down/i.test(e.state);
+        div.innerHTML = `
+          <span class="system-name">${e.name}</span>
+          <span class="system-state ${danger ? "danger" : ""}">${e.state}</span>
+        `;
+        list.appendChild(div);
+      });
+
+      statusEl.innerHTML = 'System API: <span>online</span>';
+    }
+
+    async function loadOps() {
+      const statusEl = document.getElementById("ops-status");
+      statusEl.innerHTML = 'Ops API: <span>loading…</span>';
+
+      const data = await safeFetch("/api/ops");
+      if (!data) {
+        statusEl.innerHTML = 'Ops API: <span style="color: var(--danger);">offline</span>';
+        return;
+      }
+
+      // You can expand this later; for now we just mark it online.
+      statusEl.innerHTML = 'Ops API: <span>online</span>';
+    }
+
+    async function loadEvidence() {
+      const statusEl = document.getElementById("evidence-status");
+      statusEl.innerHTML = 'Evidence API: <span>loading…</span>';
+
+      const data = await safeFetch("/api/evidence");
+      if (!data) {
+        statusEl.innerHTML = 'Evidence API: <span style="color: var(--danger);">offline</span>';
+        return;
+      }
+
+      statusEl.innerHTML = 'Evidence API: <span>online</span>';
+    }
+
+    async function loadSettings() {
+      const statusEl = document.getElementById("settings-status");
+      statusEl.innerHTML = 'Settings API: <span>loading…</span>';
+
+      const data = await safeFetch("/api/settings");
+      if (!data) {
+        statusEl.innerHTML = 'Settings API: <span style="color: var(--danger);">offline</span>';
+        return;
+      }
+
+      statusEl.innerHTML = 'Settings API: <span>online</span>';
+    }
+
+    (async () => {
+      await Promise.all([
+        loadDashboard(),
+        loadSystem(),
+        loadOps(),
+        loadEvidence(),
+        loadSettings()
+      ]);
+    })();
+  </script>
 </body>
 </html>
