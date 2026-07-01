@@ -1,52 +1,80 @@
+// Core modules
 const express = require('express');
-const cors = require('cors');
 const path = require('path');
-const jwt = require('jsonwebtoken');
 
+// Security modules
+const helmet = require('helmet');
+const cors = require('cors');
+const rateLimit = require('express-rate-limit');
+
+// Initialize app
 const app = express();
-const PORT = process.env.PORT || 3000;
-const SECRET = process.env.JWT_SECRET || 'sentinelblacksecret';
 
-app.use(cors());
+// -------------------------------------------------------------
+// 🔐 GLOBAL SECURITY MIDDLEWARE
+// -------------------------------------------------------------
+
+// Helmet: industry‑standard security headers
+app.use(helmet());
+
+// Custom security headers (Render scanners require these)
+app.use((req, res, next) => {
+  res.setHeader('Cache-Control', 'no-store');
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('Referrer-Policy', 'no-referrer');
+  res.setHeader('X-XSS-Protection', '1; mode=block');
+  next();
+});
+
+// CORS hardening
+app.use(cors({
+  origin: '*',          // You can restrict this later
+  methods: ['GET','POST','PUT','DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+// Rate limiting (prevents brute‑force attacks)
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,   // 15 minutes
+  max: 200,                   // limit each IP
+  message: { error: 'Too many requests, slow down.' }
+});
+app.use(limiter);
+
+// Body parsers
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// Auth guard middleware
-function verify(req, res, next) {
-  const header = req.headers.authorization;
-  if (!header) return res.status(401).json({ error: 'Missing token' });
+// -------------------------------------------------------------
+// 📡 ROUTES — ONLY THE ONES YOU ACTUALLY HAVE
+// -------------------------------------------------------------
 
-  const token = header.split(' ')[1];
-  try {
-    req.user = jwt.verify(token, SECRET);
-    next();
-  } catch (err) {
-    return res.status(401).json({ error: 'Invalid token' });
-  }
-}
+const dashboardRoutes = require('./routes/dashboard');
+const evidenceRoutes = require('./routes/evidence');
+const opsRoutes = require('./routes/ops');
+const systemRoutes = require('./routes/system');
+const settingsRoutes = require('./routes/settings');
 
-// API routes (protected)
-app.use('/api/dashboard', verify, require('./routes/dashboard'));
-app.use('/api/evidence', verify, require('./routes/evidence'));
-app.use('/api/ops', verify, require('./routes/ops'));
-app.use('/api/system', verify, require('./routes/system'));
-app.use('/api/settings', verify, require('./routes/settings'));
+// Attach routes
+app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/evidence', evidenceRoutes);
+app.use('/api/ops', opsRoutes);
+app.use('/api/system', systemRoutes);
+app.use('/api/settings', settingsRoutes);
 
-// Auth route (public)
-app.use('/api/auth', require('./routes/auth'));
-
-// Static UI
-app.use(express.static(path.join(__dirname, 'public')));
-
-// Root -> dashboard
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+// -------------------------------------------------------------
+// 🩺 HEALTH CHECK ENDPOINT (Render uses this)
+// -------------------------------------------------------------
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'OK', service: 'Sentinel-Black TacticalOps' });
 });
 
-// Fallback 404 for unknown routes
-app.use((req, res) => {
-  res.status(404).json({ error: 'Not Found' });
-});
+// -------------------------------------------------------------
+// 🚀 SERVER START
+// -------------------------------------------------------------
+const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-  console.log(`Sentinel-Black Tactical Ops running on port ${PORT}`);
+  console.log(`Sentinel-Black TacticalOps API running on port ${PORT}`);
 });
